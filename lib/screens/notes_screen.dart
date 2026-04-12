@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secure_notes/models/note.dart';
+import 'package:secure_notes/screens/add_note_screen.dart';
+import 'package:secure_notes/screens/edit_note_screen.dart';
 import 'package:secure_notes/services/database_service.dart';
 
 class NotesScreen extends StatefulWidget {
@@ -82,8 +84,48 @@ class _NotesScreenState extends State<NotesScreen> {
             onReorder: _reorderNotes,
             itemBuilder: (ctx, index) {
               final note = _notes[index];
-              return Dismissible(key: ValueKey(note.id), child: ListTile(key: ValueKey(note.id),));
+              return Dismissible(
+                key: ValueKey(note.id),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 20),
+                  child: const Icon(Icons.delete, color: Colors.white),
+                ),
+                child: ListTile(
+                  key: ValueKey(note.id),
+                  title: Text(
+                    note.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(
+                    note.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => EditNoteScreen(note: note),
+                      ),
+                    );
+                    _loadNotes();
+                  },
+                ),
+              );
             },
           ),
+    floatingActionButton: FloatingActionButton(
+      onPressed: () async {
+        await Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const AddNoteScreen()),
+        );
+        _loadNotes();
+      },
+      child: const Icon(Icons.add),
+    ),
   );
 }
