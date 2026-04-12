@@ -55,7 +55,18 @@ class _NotesScreenState extends State<NotesScreen> {
     }
   }
 
-  _reorderNotes(int a, int b) {}
+  Future<void> _reorderNotes(int oldIndex, int newIndex) async {
+    if (newIndex > oldIndex) newIndex--;
+    setState(() {
+      final note = _notes.removeAt(oldIndex);
+      _notes.insert(newIndex, note);
+    });
+
+    for (int i = 0; i < _notes.length; i++) {
+      _notes[i].position = i;
+      await DatabaseService.instance.updateNote(_notes[i]);
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -93,26 +104,40 @@ class _NotesScreenState extends State<NotesScreen> {
                   padding: const EdgeInsets.only(right: 20),
                   child: const Icon(Icons.delete, color: Colors.white),
                 ),
-                child: ListTile(
-                  key: ValueKey(note.id),
-                  title: Text(
-                    note.title,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                onDismissed: (_) => _deleteNote(note),
+                child: Card(
+                  elevation: 0,
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
                   ),
-                  subtitle: Text(
-                    note.description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    side: BorderSide(
+                      color: Colors.grey.shade200,
+                    ), // Subtle border
                   ),
-                  onTap: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => EditNoteScreen(note: note),
-                      ),
-                    );
-                    _loadNotes();
-                  },
+                  child: ListTile(
+                    key: ValueKey(note.id),
+                    title: Text(
+                      note.title,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(
+                      note.description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EditNoteScreen(note: note),
+                        ),
+                      );
+                      _loadNotes();
+                    },
+                  ),
                 ),
               );
             },
