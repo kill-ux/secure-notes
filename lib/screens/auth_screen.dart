@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:secure_notes/l10n/app_localizations.dart';
 import 'package:secure_notes/screens/notes_screen.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final LocalAuthentication _auth = LocalAuthentication();
   bool _isAuthenticating = false;
-  String _message = 'Press the button to authenticate';
+  String? _message;
 
   @override
   void initState() {
@@ -22,11 +23,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future<void> _authenticate() async {
     final bool canCheck = await _auth.canCheckBiometrics;
-    print("################### canCheck =>");
-    print(canCheck);
     final bool isDeviceSupported = await _auth.isDeviceSupported();
-    print("################### isDeviceSupported =>");
-    print(isDeviceSupported);
     final bool canAuthenticate = canCheck || isDeviceSupported;
 
     if (!canAuthenticate) {
@@ -67,6 +64,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Colors.grey[900],
       body: Center(
@@ -87,7 +85,7 @@ class _AuthScreenState extends State<AuthScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(
-                _message,
+                _message ?? l10n.authMessage,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),

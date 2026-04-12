@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secure_notes/l10n/app_localizations.dart';
 import 'package:secure_notes/models/note.dart';
 import 'package:secure_notes/screens/add_note_screen.dart';
 import 'package:secure_notes/screens/edit_note_screen.dart';
@@ -69,88 +70,91 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Secure Notes'),
-      actions: [
-        if (_notes.isNotEmpty)
-          IconButton(
-            icon: const Icon(Icons.delete_sweep),
-            tooltip: 'Delete All',
-            onPressed: _deleteAllNotes,
-          ),
-      ],
-    ),
-
-    body: _notes.isEmpty
-        ? const Center(
-            child: Text(
-              'No notes yet.\nTap + to add one.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: Colors.grey),
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Secure Notes'),
+        actions: [
+          if (_notes.isNotEmpty)
+            IconButton(
+              icon: const Icon(Icons.delete_sweep),
+              tooltip: 'Delete All',
+              onPressed: _deleteAllNotes,
             ),
-          )
-        : ReorderableListView.builder(
-            itemCount: _notes.length,
-            onReorder: _reorderNotes,
-            itemBuilder: (ctx, index) {
-              final note = _notes[index];
-              return Dismissible(
-                key: ValueKey(note.id),
-                direction: DismissDirection.endToStart,
-                background: Container(
-                  color: Colors.red,
-                  alignment: Alignment.centerRight,
-                  padding: const EdgeInsets.only(right: 20),
-                  child: const Icon(Icons.delete, color: Colors.white),
-                ),
-                onDismissed: (_) => _deleteNote(note),
-                child: Card(
-                  elevation: 0,
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 16,
+        ],
+      ),
+
+      body: _notes.isEmpty
+          ? const Center(
+              child: Text(
+                'No notes yet.\nTap + to add one.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.grey),
+              ),
+            )
+          : ReorderableListView.builder(
+              itemCount: _notes.length,
+              onReorder: _reorderNotes,
+              itemBuilder: (ctx, index) {
+                final note = _notes[index];
+                return Dismissible(
+                  key: ValueKey(note.id),
+                  direction: DismissDirection.endToStart,
+                  background: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.only(right: 20),
+                    child: const Icon(Icons.delete, color: Colors.white),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                    side: BorderSide(
-                      color: Colors.grey.shade200,
-                    ), // Subtle border
-                  ),
-                  child: ListTile(
-                    key: ValueKey(note.id),
-                    title: Text(
-                      note.title,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
+                  onDismissed: (_) => _deleteNote(note),
+                  child: Card(
+                    elevation: 0,
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 16,
                     ),
-                    subtitle: Text(
-                      note.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                      side: BorderSide(
+                        color: Colors.grey.shade200,
+                      ), // Subtle border
                     ),
-                    onTap: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => EditNoteScreen(note: note),
-                        ),
-                      );
-                      _loadNotes();
-                    },
+                    child: ListTile(
+                      key: ValueKey(note.id),
+                      title: Text(
+                        note.title,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(
+                        note.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () async {
+                        await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => EditNoteScreen(note: note),
+                          ),
+                        );
+                        _loadNotes();
+                      },
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () async {
-        await Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const AddNoteScreen()),
-        );
-        _loadNotes();
-      },
-      child: const Icon(Icons.add),
-    ),
-  );
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AddNoteScreen()),
+          );
+          _loadNotes();
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
 }

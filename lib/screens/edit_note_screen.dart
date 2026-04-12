@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secure_notes/l10n/app_localizations.dart';
 import '../models/note.dart';
 import '../services/database_service.dart';
 
@@ -48,6 +49,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Note')),
       body: Padding(

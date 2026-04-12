@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secure_notes/l10n/app_localizations.dart';
 import 'package:secure_notes/models/note.dart';
 import 'package:secure_notes/services/database_service.dart';
 
@@ -42,6 +43,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(title: const Text('Add Note')),
       body: Padding(
