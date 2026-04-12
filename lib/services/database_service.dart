@@ -67,7 +67,7 @@ class DatabaseService {
   }
 
   /// DELETE - delete all
-  Future<void> deleteAllNotes(int id) async {
+  Future<void> deleteAllNotes() async {
     final db = await database;
     db.delete('notes');
   }
