@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:secure_notes/models/note.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DatabaseService {
@@ -34,5 +35,45 @@ class DatabaseService {
     ''');
   }
 
-  // Future<>
+  /// READ - get all notes ordered by position
+  Future<List<Note>> getAllNotes() async {
+    final db = await database;
+    final res = await db.query('notes', orderBy: 'position ASC');
+    return res.map((map) => Note.fromMap(map)).toList();
+  }
+
+  /// CREATE - create a note
+  Future<Note> addNote(Note note) async {
+    final db = await database;
+    final id = await db.insert('notes', note.toMap());
+    return note..id = id;
+  }
+
+  /// UPDATE - update a note
+  Future<void> updateNote(Note note) async {
+    final db = await database;
+    await db.update(
+      'notes',
+      note.toMap(),
+      where: 'id = ?',
+      whereArgs: [note.id],
+    );
+  }
+
+  /// DELETE - delete a note by id
+  Future<void> deleteNote(int id) async {
+    final db = await database;
+    db.delete('notes', where: 'id = ?', whereArgs: [id]);
+  }
+
+  /// DELETE - delete all
+  Future<void> deleteAllNotes(int id) async {
+    final db = await database;
+    db.delete('notes');
+  }
+
+  Future<void> close() async {
+    final db = await database;
+    db.close();
+  }
 }
