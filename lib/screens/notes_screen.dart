@@ -23,6 +23,11 @@ class _NotesScreenState extends State<NotesScreen> {
     setState(() => _notes = notes);
   }
 
+  Future<void> _deleteNote(Note note) async {
+    await DatabaseService.instance.deleteNote(note.id!);
+    _loadNotes();
+  }
+
   Future<void> _deleteAllNotes() async {
     final confirm = await showDialog<bool>(
       context: context,
@@ -44,9 +49,11 @@ class _NotesScreenState extends State<NotesScreen> {
 
     if (confirm == true) {
       await DatabaseService.instance.deleteAllNotes();
-      
+      _loadNotes();
     }
   }
+
+  _reorderNotes(int a, int b) {}
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -61,5 +68,22 @@ class _NotesScreenState extends State<NotesScreen> {
           ),
       ],
     ),
+
+    body: _notes.isEmpty
+        ? const Center(
+            child: Text(
+              'No notes yet.\nTap + to add one.',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          )
+        : ReorderableListView.builder(
+            itemCount: _notes.length,
+            onReorder: _reorderNotes,
+            itemBuilder: (ctx, index) {
+              final note = _notes[index];
+              return Dismissible(key: ValueKey(note.id), child: ListTile(key: ValueKey(note.id),));
+            },
+          ),
   );
 }
