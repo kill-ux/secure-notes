@@ -55,7 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
         setState(() => _message = l10n.authFailed);
       }
     } catch (e) {
-      setState(() => _message = 'Error: ${e.toString()}');
+      setState(() => _message = l10n.authFailed);
     } finally {
       setState(() {
         _isAuthenticating = false;
