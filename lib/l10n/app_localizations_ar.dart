@@ -74,4 +74,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get saving => '...جارٍ الحفظ';
+
+  @override
+  String get language => 'اللغة';
 }

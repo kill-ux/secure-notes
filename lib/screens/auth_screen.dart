@@ -18,17 +18,18 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _authenticate);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _authenticate());
   }
 
   Future<void> _authenticate() async {
+    final l10n = AppLocalizations.of(context)!;
     final bool canCheck = await _auth.canCheckBiometrics;
     final bool isDeviceSupported = await _auth.isDeviceSupported();
     final bool canAuthenticate = canCheck || isDeviceSupported;
 
     if (!canAuthenticate) {
       setState(() {
-        _message = 'Biometrics not available on this device';
+        _message = l10n.biometricsUnavailable;
       });
       return;
     }
@@ -36,11 +37,11 @@ class _AuthScreenState extends State<AuthScreen> {
     try {
       setState(() {
         _isAuthenticating = true;
-        _message = 'Authenticating...';
+        _message = l10n.authenticating;
       });
 
       final bool authenticated = await _auth.authenticate(
-        localizedReason: 'Authenticate to access your secure notes',
+        localizedReason: l10n.appTitle, // Using appTitle as a reasonable localized reason
         biometricOnly: true,
         persistAcrossBackgrounding: true,
       );
@@ -51,7 +52,7 @@ class _AuthScreenState extends State<AuthScreen> {
           MaterialPageRoute(builder: (_) => const NotesScreen()),
         );
       } else {
-        setState(() => _message = 'Authentication failed. Try again.');
+        setState(() => _message = l10n.authFailed);
       }
     } catch (e) {
       setState(() => _message = 'Error: ${e.toString()}');
@@ -73,9 +74,9 @@ class _AuthScreenState extends State<AuthScreen> {
           children: [
             const Icon(Icons.lock_outline, size: 80, color: Colors.white),
             const SizedBox(height: 24),
-            const Text(
-              'Secure Notes',
-              style: TextStyle(
+            Text(
+              l10n.appTitle,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -96,7 +97,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 : ElevatedButton.icon(
                     onPressed: _authenticate,
                     icon: const Icon(Icons.fingerprint),
-                    label: const Text('Authenticate'),
+                    label: Text(l10n.authenticate),
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 32,

@@ -4,6 +4,8 @@ import 'package:secure_notes/l10n/app_localizations.dart';
 import 'package:secure_notes/screens/auth_screen.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
+final localeNotifier = ValueNotifier<Locale?>(null);
+
 void main() {
   runApp(const MainApp());
 }
@@ -13,21 +15,22 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Secure Notes',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        useMaterial3: true,
-      ),
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [Locale('en'), Locale('ar')],
-      home: const AuthScreen(),
+    return ValueListenableBuilder<Locale?>(
+      valueListenable: localeNotifier,
+      builder: (context, locale, child) {
+        return MaterialApp(
+          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+            useMaterial3: true,
+          ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: locale,
+          home: const AuthScreen(),
+        );
+      },
     );
   }
 }

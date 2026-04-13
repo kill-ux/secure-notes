@@ -21,5 +21,6 @@
   "descriptionEmpty": "الوصف لا يمكن أن يكون فارغاً",
   "saveNote": "حفظ الملاحظة",
   "saveChanges": "حفظ التغييرات",
-  "saving": "...جارٍ الحفظ"
+  "saving": "...جارٍ الحفظ",
+  "language": "اللغة"
 }

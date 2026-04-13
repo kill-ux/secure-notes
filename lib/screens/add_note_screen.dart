@@ -45,7 +45,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Note')),
+      appBar: AppBar(title: Text(l10n.addNote)),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
@@ -54,14 +54,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
             children: [
               TextFormField(
                 controller: _titleController,
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: l10n.title,
+                  border: const OutlineInputBorder(),
                 ),
                 textInputAction: TextInputAction.next,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Title cannot be empty';
+                    return l10n.titleEmpty;
                   }
                   return null;
                 },
@@ -69,16 +69,16 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
-                  labelText: 'Description',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: l10n.description,
+                  border: const OutlineInputBorder(),
                   alignLabelWithHint: true,
                 ),
                 maxLines: 6,
                 textInputAction: TextInputAction.done,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return 'Description cannot be empty';
+                    return l10n.descriptionEmpty;
                   }
                   return null;
                 },
@@ -95,7 +95,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
                       : const Icon(Icons.save),
-                  label: Text(_isSaving ? 'Saving...' : 'Save Note'),
+                  label: Text(_isSaving ? l10n.saving : l10n.saveNote),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                   ),

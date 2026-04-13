@@ -21,5 +21,6 @@
     "descriptionEmpty": "Description cannot be empty",
     "saveNote": "Save Note",
     "saveChanges": "Save Changes",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "language": "Language"
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secure_notes/l10n/app_localizations.dart';
+import 'package:secure_notes/main.dart';
 import 'package:secure_notes/models/note.dart';
 import 'package:secure_notes/screens/add_note_screen.dart';
 import 'package:secure_notes/screens/edit_note_screen.dart';
@@ -32,19 +33,20 @@ class _NotesScreenState extends State<NotesScreen> {
   }
 
   Future<void> _deleteAllNotes() async {
+    final l10n = AppLocalizations.of(context)!;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('Delete All Notes'),
-        content: const Text('Are you sure you want to delete all notes?'),
+        title: Text(l10n.deleteAllTitle),
+        content: Text(l10n.deleteAllMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete', style: TextStyle(color: Colors.red)),
+            child: Text(l10n.delete, style: const TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -74,23 +76,42 @@ class _NotesScreenState extends State<NotesScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Secure Notes'),
+        title: Text(l10n.appTitle),
         actions: [
+          PopupMenuButton<Locale?>(
+            icon: const Icon(Icons.language),
+            tooltip: l10n.language,
+            onSelected: (locale) => localeNotifier.value = locale,
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: Locale('en'),
+                child: Text('English'),
+              ),
+              const PopupMenuItem(
+                value: Locale('ar'),
+                child: Text('العربية'),
+              ),
+              const PopupMenuItem(
+                value: Locale('ja'),
+                child: Text('日本語'),
+              ),
+            ],
+          ),
           if (_notes.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_sweep),
-              tooltip: 'Delete All',
+              tooltip: l10n.deleteAll,
               onPressed: _deleteAllNotes,
             ),
         ],
       ),
 
       body: _notes.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
-                'No notes yet.\nTap + to add one.',
+                l10n.noNotes,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: const TextStyle(fontSize: 16, color: Colors.grey),
               ),
             )
           : ReorderableListView.builder(

@@ -73,4 +73,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saving => 'Saving...';
+
+  @override
+  String get language => 'Language';
 }
