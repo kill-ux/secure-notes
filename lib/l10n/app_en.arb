@@ -22,5 +22,9 @@
     "saveNote": "Save Note",
     "saveChanges": "Save Changes",
     "saving": "Saving...",
-    "language": "Language"
+    "language": "Language",
+    "theme": "Theme",
+    "systemTheme": "System",
+    "lightMode": "Light",
+    "darkMode": "Dark"
 }

@@ -22,5 +22,9 @@
     "saveNote": "ノートを保存",
     "saveChanges": "変更を保存",
     "saving": "保存中...",
-    "language": "言語"
+    "language": "言語",
+    "theme": "テーマ",
+    "systemTheme": "システム",
+    "lightMode": "ライトモード",
+    "darkMode": "ダークモード"
 }

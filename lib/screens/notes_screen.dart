@@ -78,23 +78,51 @@ class _NotesScreenState extends State<NotesScreen> {
       appBar: AppBar(
         title: Text(l10n.appTitle),
         actions: [
+          PopupMenuButton<ThemeMode>(
+            icon: const Icon(Icons.brightness_6),
+            tooltip: l10n.theme,
+            onSelected: (mode) => themeNotifier.value = mode,
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: ThemeMode.system,
+                child: Row(
+                  children: [
+                    const Icon(Icons.brightness_auto),
+                    const SizedBox(width: 8),
+                    Text(l10n.systemTheme),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: ThemeMode.light,
+                child: Row(
+                  children: [
+                    const Icon(Icons.light_mode),
+                    const SizedBox(width: 8),
+                    Text(l10n.lightMode),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: ThemeMode.dark,
+                child: Row(
+                  children: [
+                    const Icon(Icons.dark_mode),
+                    const SizedBox(width: 8),
+                    Text(l10n.darkMode),
+                  ],
+                ),
+              ),
+            ],
+          ),
           PopupMenuButton<Locale?>(
             icon: const Icon(Icons.language),
             tooltip: l10n.language,
             onSelected: (locale) => localeNotifier.value = locale,
             itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: Locale('en'),
-                child: Text('English'),
-              ),
-              const PopupMenuItem(
-                value: Locale('ar'),
-                child: Text('العربية'),
-              ),
-              const PopupMenuItem(
-                value: Locale('ja'),
-                child: Text('日本語'),
-              ),
+              const PopupMenuItem(value: Locale('en'), child: Text('English')),
+              const PopupMenuItem(value: Locale('ar'), child: Text('العربية')),
+              const PopupMenuItem(value: Locale('ja'), child: Text('日本語')),
             ],
           ),
           if (_notes.isNotEmpty)

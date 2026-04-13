@@ -77,4 +77,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get language => 'اللغة';
+
+  @override
+  String get theme => 'المظهر';
+
+  @override
+  String get systemTheme => 'تلقائي';
+
+  @override
+  String get lightMode => 'فاتح';
+
+  @override
+  String get darkMode => 'داكن';
 }

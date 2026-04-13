@@ -22,5 +22,9 @@
   "saveNote": "حفظ الملاحظة",
   "saveChanges": "حفظ التغييرات",
   "saving": "...جارٍ الحفظ",
-  "language": "اللغة"
+  "language": "اللغة",
+  "theme": "المظهر",
+  "systemTheme": "تلقائي",
+  "lightMode": "فاتح",
+  "darkMode": "داكن"
 }

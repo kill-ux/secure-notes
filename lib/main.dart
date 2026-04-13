@@ -5,6 +5,7 @@ import 'package:secure_notes/screens/auth_screen.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
 final localeNotifier = ValueNotifier<Locale?>(null);
+final themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.system);
 
 void main() {
   runApp(const MainApp());
@@ -18,17 +19,31 @@ class MainApp extends StatelessWidget {
     return ValueListenableBuilder<Locale?>(
       valueListenable: localeNotifier,
       builder: (context, locale, child) {
-        return MaterialApp(
-          onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-            useMaterial3: true,
-          ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: locale,
-          home: const AuthScreen(),
+        return ValueListenableBuilder(
+          valueListenable: themeNotifier,
+          builder: (context, themeMode, child) {
+            return MaterialApp(
+              onGenerateTitle: (context) =>
+                  AppLocalizations.of(context)!.appTitle,
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+                useMaterial3: true,
+              ),
+              darkTheme: ThemeData(
+                colorScheme: ColorScheme.fromSeed(
+                  seedColor: Colors.indigo,
+                  brightness: Brightness.dark,
+                ),
+                useMaterial3: true,
+              ),
+              themeMode: themeMode,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: locale,
+              home: const AuthScreen(),
+            );
+          },
         );
       },
     );
