@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:secure_notes/l10n/app_localizations.dart';
 import 'package:secure_notes/screens/auth_screen.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
 
 final localeNotifier = ValueNotifier<Locale?>(null);
 final themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.system);
