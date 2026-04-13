@@ -39,13 +39,13 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   Future<void> updateNote() async {
     if (validForm.currentState!.validate()) {
-      final int positionValue = int.tryParse(positionController.text) ?? widget.note.position;
+      // final int positionValue = int.tryParse(positionController.text) ?? widget.note.position;
 
       final updatedNote = Note(
         id: widget.note.id, 
         title: titleController.text,
         description: descriptionController.text,
-        position: positionValue,
+        position: widget.note.position,
       );
 
       await DatabaseService.instance.updateNote(updatedNote);

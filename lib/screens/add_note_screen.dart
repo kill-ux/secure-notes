@@ -31,12 +31,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   Future<void> savingNote() async {
     // verification formulaire
     if (validForm.currentState!.validate()) {
-    final int positionValue = int.tryParse(positionController.text) ?? 0;
+      final allNotes = await DatabaseService.instance.getAllNotes();
+      final int nextPosition = allNotes.length;
+      // final int positionValue = int.tryParse(positionController.text) ?? 0;
 
       final newNote = Note(
         title: titleController.text,
         description: descriptionController.text,
-        position: positionValue,
+        position: nextPosition,
       );
 
       await DatabaseService.instance.addNote(newNote);
@@ -65,7 +67,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     labelText: l10n.title,
                     border: OutlineInputBorder(),
                   ),
-                  // Validation : le titre ne doit pas etre vide
+                  
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return l10n.titleEmpty;
