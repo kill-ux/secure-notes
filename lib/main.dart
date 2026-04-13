@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secure_notes/l10n/app_localizations.dart';
-import 'package:secure_notes/screens/auth_screen.dart';
+// import 'package:secure_notes/screens/auth_screen.dart';
+import 'package:secure_notes/screens/notes_screen.dart';
 
 final localeNotifier = ValueNotifier<Locale?>(null);
 final themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.system);
@@ -25,7 +26,7 @@ class MainApp extends StatelessWidget {
                   AppLocalizations.of(context)!.appTitle,
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
-                colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
+                colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 63, 148, 181)),
                 useMaterial3: true,
               ),
               darkTheme: ThemeData(
@@ -39,7 +40,8 @@ class MainApp extends StatelessWidget {
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               locale: locale,
-              home: const AuthScreen(),
+              // home: const NotesScreen(),
+              home: const NotesScreen(),
             );
           },
         );

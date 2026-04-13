@@ -118,6 +118,7 @@ class _NotesScreenState extends State<NotesScreen> {
             onSelected: (locale) => localeNotifier.value = locale,
             itemBuilder: (context) => [
               const PopupMenuItem(value: Locale('en'), child: Text('English')),
+              const PopupMenuItem(value: Locale('fr'), child: Text('Français')),
               const PopupMenuItem(value: Locale('ar'), child: Text('العربية')),
               const PopupMenuItem(value: Locale('ja'), child: Text('日本語')),
             ],
