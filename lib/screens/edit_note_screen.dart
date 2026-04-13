@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secure_notes/l10n/app_localizations.dart';
+import 'package:share_plus/share_plus.dart';
 import '../models/note.dart';
 import '../services/database_service.dart';
 
@@ -51,7 +52,22 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.editNote)),
+      appBar: AppBar(
+        title: Text(l10n.editNote),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await SharePlus.instance.share(
+                ShareParams(
+                  subject: widget.note.title,
+                  text: '${widget.note.title}\n\n${widget.note.description}',
+                ),
+              );
+            },
+            icon: const Icon(Icons.share),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(

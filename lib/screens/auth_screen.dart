@@ -41,7 +41,7 @@ class _AuthScreenState extends State<AuthScreen> {
       });
 
       final bool authenticated = await _auth.authenticate(
-        localizedReason: l10n.appTitle, // Using appTitle as a reasonable localized reason
+        localizedReason: l10n.appTitle,
         biometricOnly: true,
         persistAcrossBackgrounding: true,
       );
