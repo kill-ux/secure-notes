@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import '../models/note.dart';
 import '../services/database_service.dart';
@@ -17,13 +16,11 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   // get texte
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-  final positionController = TextEditingController();
 
   @override
   void dispose() {
     titleController.dispose();
     descriptionController.dispose();
-    positionController.dispose();
     super.dispose();
   }
 
@@ -31,12 +28,13 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   Future<void> savingNote() async {
     // verification formulaire
     if (validForm.currentState!.validate()) {
-    final int positionValue = int.tryParse(positionController.text) ?? 0;
+      final allNotes = await DatabaseService.instance.getAllNotes();
+      final int nextPosition = allNotes.length;
 
       final newNote = Note(
         title: titleController.text,
         description: descriptionController.text,
-        position: positionValue,
+        position: nextPosition,
       );
 
       await DatabaseService.instance.addNote(newNote);
@@ -65,7 +63,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     labelText: l10n.title,
                     border: OutlineInputBorder(),
                   ),
-                  // Validation : le titre ne doit pas etre vide
+                  
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return l10n.titleEmpty;
@@ -87,16 +85,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                     }
                     return null;
                   },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: positionController,
-                  decoration: const InputDecoration(
-                    labelText: 'Position (Index)',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
                 const SizedBox(height: 30),
                 SizedBox(

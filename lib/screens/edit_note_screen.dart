@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import '../models/note.dart';
 import '../services/database_service.dart';
@@ -19,7 +18,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   late TextEditingController titleController;
   late TextEditingController descriptionController;
-  late TextEditingController positionController;
 
   @override
   void initState() {
@@ -28,29 +26,22 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
     descriptionController = TextEditingController(
       text: widget.note.description,
     );
-    positionController = TextEditingController(
-      text: widget.note.position.toString(),
-    );
   }
 
   @override
   void dispose() {
     titleController.dispose();
     descriptionController.dispose();
-    positionController.dispose();
     super.dispose();
   }
 
   Future<void> updateNote() async {
     if (validForm.currentState!.validate()) {
-      final int positionValue =
-          int.tryParse(positionController.text) ?? widget.note.position;
-
       final updatedNote = Note(
         id: widget.note.id,
         title: titleController.text,
         description: descriptionController.text,
-        position: positionValue,
+        position: widget.note.position,
       );
 
       await DatabaseService.instance.updateNote(updatedNote);
@@ -113,16 +104,6 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                   ),
                   validator: (value) =>
                       value == null || value.isEmpty ? 'Required' : null,
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: positionController,
-                  decoration: InputDecoration(
-                    labelText: 'Position',
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
                 const SizedBox(height: 30),
                 SizedBox(
