@@ -1,5 +1,5 @@
 name: secure_notes
-description: "A new Flutter project."
+description: "A secure note-taking app with biometric authentication."
 publish_to: 'none'
 version: 0.1.0+1
 
