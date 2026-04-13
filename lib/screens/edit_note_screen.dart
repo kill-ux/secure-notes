@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import '../models/note.dart';
 import '../services/database_service.dart';
 import 'package:secure_notes/l10n/app_localizations.dart';
 
-
 class EditNoteScreen extends StatefulWidget {
-  final Note note; 
+  final Note note;
 
   const EditNoteScreen({super.key, required this.note});
 
@@ -16,7 +16,7 @@ class EditNoteScreen extends StatefulWidget {
 
 class _EditNoteScreenState extends State<EditNoteScreen> {
   final validForm = GlobalKey<FormState>();
-  
+
   late TextEditingController titleController;
   late TextEditingController descriptionController;
   late TextEditingController positionController;
@@ -25,8 +25,12 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
   void initState() {
     super.initState();
     titleController = TextEditingController(text: widget.note.title);
-    descriptionController = TextEditingController(text: widget.note.description);
-    positionController = TextEditingController(text: widget.note.position.toString());
+    descriptionController = TextEditingController(
+      text: widget.note.description,
+    );
+    positionController = TextEditingController(
+      text: widget.note.position.toString(),
+    );
   }
 
   @override
@@ -39,10 +43,11 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
   Future<void> updateNote() async {
     if (validForm.currentState!.validate()) {
-      final int positionValue = int.tryParse(positionController.text) ?? widget.note.position;
+      final int positionValue =
+          int.tryParse(positionController.text) ?? widget.note.position;
 
       final updatedNote = Note(
-        id: widget.note.id, 
+        id: widget.note.id,
         title: titleController.text,
         description: descriptionController.text,
         position: positionValue,
@@ -60,7 +65,7 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.editNote), 
+        title: Text(l10n.editNote),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
@@ -68,7 +73,18 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
               await DatabaseService.instance.deleteNote(widget.note.id!);
               if (mounted) Navigator.pop(context, true);
             },
-          )
+          ),
+          IconButton(
+            onPressed: () async {
+              await SharePlus.instance.share(
+                ShareParams(
+                  subject: widget.note.title,
+                  text: '${widget.note.title}\n\n${widget.note.description}',
+                ),
+              );
+            },
+            icon: const Icon(Icons.share),
+          ),
         ],
       ),
       body: Padding(
@@ -84,7 +100,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                     labelText: 'Title',
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
@@ -94,7 +111,8 @@ class _EditNoteScreenState extends State<EditNoteScreen> {
                     labelText: l10n.description,
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) => value == null || value.isEmpty ? 'Required' : null,
+                  validator: (value) =>
+                      value == null || value.isEmpty ? 'Required' : null,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
