@@ -60,6 +60,22 @@ class DatabaseService {
     );
   }
 
+  Future<void> updateAllNote(List<Note> notes) async {
+    final db = await database;
+    await db.transaction((txn) async {
+      for (int i = 0; i < notes.length; i++) {
+        final note = notes[i];
+        note.position = i;
+        await txn.update(
+          'notes',
+          note.toMap(),
+          where: 'id = ?',
+          whereArgs: [note.id],
+        );
+      }
+    });
+  }
+
   /// DELETE - delete a note by id
   Future<void> deleteNote(int id) async {
     final db = await database;

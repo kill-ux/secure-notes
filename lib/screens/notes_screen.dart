@@ -65,10 +65,7 @@ class _NotesScreenState extends State<NotesScreen> {
       _notes.insert(newIndex, note);
     });
 
-    for (int i = 0; i < _notes.length; i++) {
-      _notes[i].position = i;
-      await DatabaseService.instance.updateNote(_notes[i]);
-    }
+    await DatabaseService.instance.updateAllNote(_notes);
   }
 
   @override
